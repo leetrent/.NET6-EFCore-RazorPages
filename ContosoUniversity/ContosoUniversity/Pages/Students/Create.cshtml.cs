@@ -24,8 +24,8 @@ namespace ContosoUniversity.Pages.Students
             return Page();
         }
 
-        //[BindProperty]
-        //public Student Student { get; set; }
+        [BindProperty]
+        public Student Student { get; set; }
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         //public async Task<IActionResult> OnPostAsync()
@@ -41,32 +41,6 @@ namespace ContosoUniversity.Pages.Students
         //    return RedirectToPage("./Index");
         //}
 
-        //public async Task<IActionResult> OnPostAsync()
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return Page();
-        //    }
-
-        //    var emptyStudent = new Student();
-
-        //    if (await TryUpdateModelAsync<Student>(
-        //        emptyStudent,
-        //        "student",   // Prefix for form value.
-        //        s => s.FirstMidName, s => s.LastName, s => s.EnrollmentDate))
-        //    {
-        //        _context.Students.Add(emptyStudent);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToPage("./Index");
-        //    }
-
-        //    return Page();
-        //}
-
-
-        [BindProperty]
-        public ViewModels.StudentVM Student { get; set; }
-
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -74,13 +48,36 @@ namespace ContosoUniversity.Pages.Students
                 return Page();
             }
 
-            var entry = _context.Add(new ContosoUniversity.Models.Student());
-            entry.CurrentValues.SetValues(Student);
-            await _context.SaveChangesAsync();
-            return RedirectToPage("./Index");
+            var emptyStudent = new Student();
+
+            if (await TryUpdateModelAsync<Student>(
+                emptyStudent,
+                "student",   // Prefix for form value.
+                s => s.FirstMidName, s => s.LastName, s => s.EnrollmentDate))
+            {
+                _context.Students.Add(emptyStudent);
+                await _context.SaveChangesAsync();
+                return RedirectToPage("./Index");
+            }
+
+            return Page();
         }
 
 
+        //[BindProperty]
+        //public ViewModels.StudentVM Student { get; set; }
 
+        //public async Task<IActionResult> OnPostAsync()
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return Page();
+        //    }
+
+        //    var entry = _context.Add(new ContosoUniversity.Models.Student());
+        //    entry.CurrentValues.SetValues(Student);
+        //    await _context.SaveChangesAsync();
+        //    return RedirectToPage("./Index");
+        //}
     }
 }
