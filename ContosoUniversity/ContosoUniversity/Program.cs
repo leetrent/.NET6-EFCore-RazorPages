@@ -31,7 +31,15 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
 
     var context = services.GetRequiredService<SchoolContext>();
-    context.Database.EnsureCreated();
+
+    //////////////////////////////////////////////////////////
+    // EnsureCreated doesn't create a migrations history table
+    // and so can't be used with migrations.It's designed for
+    // testing or rapid prototyping where the database is
+    // dropped and re-created frequently.
+    //context.Database.EnsureCreated();
+    //////////////////////////////////////////////////////////
+
     DbInitializer.Initialize(context);
 }
 
