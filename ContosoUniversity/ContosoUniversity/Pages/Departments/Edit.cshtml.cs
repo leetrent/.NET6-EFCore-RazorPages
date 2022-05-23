@@ -17,6 +17,7 @@ namespace ContosoUniversity.Pages.Departments
 
         public EditModel(ContosoUniversity.Data.SchoolContext context)
         {
+            Console.WriteLine("[Departments][Edit][Constructor] =>");
             _context = context;
         }
 
@@ -31,6 +32,8 @@ namespace ContosoUniversity.Pages.Departments
         ///////////////////////////////////////////////////////////////////////////////////////
         public async Task<IActionResult> OnGetAsync(int id)
         {
+            Console.WriteLine("[Departments][Edit][GET] =>");
+
             Department = await _context.Departments
                 .Include(d => d.Administrator)  // eager loading
                 .AsNoTracking()                 // tracking not required
@@ -53,6 +56,8 @@ namespace ContosoUniversity.Pages.Departments
         ///////////////////////////////////////////////////////////////////////////////////////
         public async Task<IActionResult> OnPostAsync(int id)
         {
+            Console.WriteLine("[Departments][Edit][POST] =>");
+
             if (!ModelState.IsValid)
             {
                 return Page();

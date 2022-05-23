@@ -23,12 +23,12 @@
                 @Html.DisplayNameFor(model => model.Department[0].StartDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Department[0].ConcurrencyToken)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Department[0].Administrator)
             </th>
-            <th>Token</th>
+            <th>
+                @Html.DisplayNameFor(model => model.Department[0].ConcurrencyToken)
+            </th>
+            <th>Token (last 7 chars)</th>
             <th></th>
         </tr>
     </thead>
@@ -44,15 +44,15 @@
             <td>
                 @Html.DisplayFor(modelItem => item.StartDate)
             </td>
+           <td>
+                @Html.DisplayFor(modelItem => item.Administrator.FullName)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ConcurrencyToken)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Administrator.FullName)
+             <td>
+                @Utility.GetLastChars(item.ConcurrencyToken)
             </td>
-                <td>
-                    @Utility.GetLastChars(item.ConcurrencyToken)
-                </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.DepartmentID">Edit</a> |
                 <a asp-page="./Details" asp-route-id="@item.DepartmentID">Details</a> |
