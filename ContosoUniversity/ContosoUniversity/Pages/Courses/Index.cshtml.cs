@@ -8,29 +8,35 @@ using Microsoft.EntityFrameworkCore;
 using ContosoUniversity.Data;
 using ContosoUniversity.Models;
 using ContosoUniversity.ViewModels;
+using AutoMapper;
 
 namespace ContosoUniversity.Pages.Courses
 {
     public class IndexModel : PageModel
     {
         private readonly ContosoUniversity.Data.SchoolContext _context;
+        public readonly IMapper _mapper;
 
-        public IndexModel(ContosoUniversity.Data.SchoolContext context)
+        public IndexModel(ContosoUniversity.Data.SchoolContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         ////////////////////////////////////////////////////
         // OPTION #1:
         ////////////////////////////////////////////////////
-        public IList<Course> Courses { get; set; }
+        public IList<CourseVM> Courses { get; set; }
 
         public async Task OnGetAsync()
         {
-            this.Courses = await _context.Courses
-                            .Include(c => c.Department)
-                            .AsNoTracking()
-                            .ToListAsync();
+
+            IList<Course> courseEntities = await _context.Courses
+                                                    .Include(c => c.Department)
+                                                    .AsNoTracking()
+                                                    .ToListAsync();
+
+            this.Courses = _mapper.Map<List<CourseVM>>(courseEntities);
         }
 
         ////////////////////////////////////////////////////

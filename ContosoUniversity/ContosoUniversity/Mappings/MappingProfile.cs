@@ -6,6 +6,11 @@ namespace ContosoUniversity.Mappings
 {
     public class MappingProfile : Profile
     {
+        public MappingProfile()
+        {
+            CreateMapProfiles();
+        }
+
         private void CreateMapProfiles()
         {
             CreateMap<Course, CourseVM>().ReverseMap();
