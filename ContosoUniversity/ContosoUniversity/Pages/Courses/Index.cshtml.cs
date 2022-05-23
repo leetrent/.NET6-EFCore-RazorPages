@@ -36,7 +36,7 @@ namespace ContosoUniversity.Pages.Courses
                                                     .AsNoTracking()
                                                     .ToListAsync();
 
-            this.Courses = _mapper.Map<List<CourseVM>>(courseEntities);
+            this.Courses = _mapper.Map<IList<CourseVM>>(courseEntities);
         }
 
         ////////////////////////////////////////////////////
