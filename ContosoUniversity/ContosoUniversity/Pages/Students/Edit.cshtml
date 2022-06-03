@@ -16,6 +16,10 @@
             <input type="hidden" asp-for="Student.ID" />
             <input type="hidden" asp-for="Student.AnyName" />
             <div class="form-group">
+                <label><b>AnyName</b></label>
+                @Html.DisplayFor(model => model.Student.AnyName)
+            </div>
+            <div class="form-group">
                 <label asp-for="Student.LastName" class="control-label"></label>
                 <input asp-for="Student.LastName" class="form-control" />
                 <span asp-validation-for="Student.LastName" class="text-danger"></span>
