@@ -27,6 +27,9 @@ namespace ContosoUniversity.Models
         [Display(Name = "Enrollment Date")]
         public DateTime EnrollmentDate { get; set; }
 
+        [Timestamp]
+        public byte[] AnyName { get; set; }
+
 
         [Display(Name = "Full Name")]
         public string FullName
@@ -38,5 +41,6 @@ namespace ContosoUniversity.Models
         }
 
         public ICollection<Enrollment> Enrollments { get; set; }
+
     }
 }
