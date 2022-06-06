@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ContosoUniversity.Data;
 using ContosoUniversity.Models;
+using System.Text;
 
 namespace ContosoUniversity.Pages.Departments
 {
@@ -32,7 +33,7 @@ namespace ContosoUniversity.Pages.Departments
         ///////////////////////////////////////////////////////////////////////////////////////
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            Console.WriteLine("[Departments][Edit][GET] =>");
+            string logSnippet = "[Departments][Edit][GET] =>";
 
             Department = await _context.Departments
                 .Include(d => d.Administrator)  // eager loading
@@ -43,6 +44,13 @@ namespace ContosoUniversity.Pages.Departments
             {
                 return NotFound();
             }
+
+            string concurrencyTokenString = this.Department.ConcurrencyToken[7].ToString();
+
+            Console.WriteLine();
+            Console.WriteLine($"{logSnippet} (this.DepartmentID.DepartmentID).: '{this.Department.DepartmentID}'");
+            Console.WriteLine($"{logSnippet} (concurrencyTokenString).........: '{concurrencyTokenString}'");
+            Console.WriteLine();
 
             // Use strongly typed data rather than ViewData.
             InstructorNameSL = new SelectList(_context.Instructors, "ID", "FirstMidName");
@@ -56,7 +64,7 @@ namespace ContosoUniversity.Pages.Departments
         ///////////////////////////////////////////////////////////////////////////////////////
         public async Task<IActionResult> OnPostAsync(int id)
         {
-            Console.WriteLine("[Departments][Edit][POST] =>");
+            string logSnippet = "[Departments][Edit][POST] =>";
 
             if (!ModelState.IsValid)
             {
@@ -73,6 +81,19 @@ namespace ContosoUniversity.Pages.Departments
             {
                 return HandleDeletedDepartment();
             }
+
+            string concurrencyTokenString = this.Department.ConcurrencyToken[7].ToString();
+
+            Console.WriteLine();
+            Console.WriteLine("-------------------------------------------------------------------------------------------------------");
+            Console.WriteLine($"{logSnippet} (this.Department == null)..................: '{this.Department == null}'");
+            Console.WriteLine($"{logSnippet} (this.Department.Name == null).............: '{this.Department.Name == null}'");
+            Console.WriteLine($"{logSnippet} (this.Department.LastName).................: '{this.Department.Name}'");
+            Console.WriteLine($"{logSnippet} (this.Department.ConcurrencyToken == null).: '{this.Department.ConcurrencyToken == null}'");
+            Console.WriteLine($"{logSnippet} (this.Department.ConcurrencyToken).........: '{concurrencyTokenString}'");
+            Console.WriteLine("-------------------------------------------------------------------------------------------------------");
+            Console.WriteLine();
+
 
             // Set ConcurrencyToken to value read in OnGetAsync
             _context.Entry(departmentToUpdate).Property(

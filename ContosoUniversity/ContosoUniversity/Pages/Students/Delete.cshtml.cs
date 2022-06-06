@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using System;
 using System.Threading.Tasks;
 
 namespace ContosoUniversity.Pages.Students
@@ -11,26 +9,19 @@ namespace ContosoUniversity.Pages.Students
     public class DeleteModel : PageModel
     {
         private readonly ContosoUniversity.Data.SchoolContext _context;
-        private readonly ILogger<DeleteModel> _logger;
 
-        public DeleteModel(ContosoUniversity.Data.SchoolContext context,
-                           ILogger<DeleteModel> logger)
+        public DeleteModel(ContosoUniversity.Data.SchoolContext context)
         {
             _context = context;
-            _logger = logger;
         }
 
         [BindProperty]
         public Student Student { get; set; }
-        public string ErrorMessage { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id, bool? saveChangesError = false)
+        public string ConcurrencyErrorMessage { get; set; }
+
+        public async Task<IActionResult> OnGetAsync(int id, bool? concurrencyError)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             Student = await _context.Students
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.ID == id);
@@ -40,40 +31,33 @@ namespace ContosoUniversity.Pages.Students
                 return NotFound();
             }
 
-            if (saveChangesError.GetValueOrDefault())
+            if (concurrencyError.GetValueOrDefault())
             {
-                ErrorMessage = String.Format("Delete {ID} failed. Try again", id);
+                ConcurrencyErrorMessage = "The record you attempted to delete "
+                  + "was modified by another user after you selected delete. "
+                  + "The delete operation was canceled and the current values in the "
+                  + "database have been displayed. If you still want to delete this "
+                  + "record, click the Delete button again.";
             }
-
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(int? id)
+        public async Task<IActionResult> OnPostAsync(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var student = await _context.Students.FindAsync(id);
-
-            if (student == null)
-            {
-                return NotFound();
-            }
-
             try
             {
-                _context.Students.Remove(student);
-                await _context.SaveChangesAsync();
+                if (await _context.Students.AnyAsync(m => m.ID == id))
+                {
+                    // Student.AnyName value is from when the entity was fetched.
+                    // If it doesn't match the DB, a DbUpdateConcurrencyException exception is thrown.
+                    _context.Students.Remove(Student);
+                    await _context.SaveChangesAsync();
+                }
                 return RedirectToPage("./Index");
             }
-            catch (DbUpdateException ex)
+            catch (DbUpdateConcurrencyException)
             {
-                _logger.LogError(ex, ErrorMessage);
-
-                return RedirectToAction("./Delete",
-                                     new { id, saveChangesError = true });
+                return RedirectToPage("./Delete", new { concurrencyError = true, id = id });
             }
         }
     }

@@ -40,6 +40,7 @@
                     @Html.DisplayNameFor(model => model.Students[0].EnrollmentDate)
                 </a>
             </th>
+            <th>Any Name</th>
             <th></th>
         </tr>
     </thead>
@@ -54,6 +55,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.EnrollmentDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AnyName)
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
