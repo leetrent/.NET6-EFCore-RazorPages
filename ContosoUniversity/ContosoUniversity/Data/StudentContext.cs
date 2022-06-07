@@ -23,6 +23,8 @@ namespace ContosoUniversity.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //modelBuilder.HasDefaultSchema("QMS");
+
             //modelBuilder.Entity<Course>().ToTable("Course");
             modelBuilder.Entity<Course>().ToTable(nameof(Course))
                 .HasMany(c => c.Instructors)
