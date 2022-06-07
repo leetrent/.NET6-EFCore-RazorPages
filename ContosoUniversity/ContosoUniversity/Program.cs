@@ -8,6 +8,16 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 
+
+//////////////////////////////////////////////////////////////////////////////
+// appsettings.json has been placed outside the project
+//////////////////////////////////////////////////////////////////////////////
+builder.Configuration
+    .SetBasePath(Environment.GetEnvironmentVariable("APPSETTINGS_DIRECTORY"))
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+//////////////////////////////////////////////////////////////////////////////
+
+
 builder.Services.AddDbContext<SchoolContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SchoolContext") ?? throw new InvalidOperationException("Connection string 'SchoolContext' not found.")));
 

@@ -14,14 +14,16 @@
       "launchBrowser": true,
       "applicationUrl": "https://localhost:7066;http://localhost:5066",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "APPSETTINGS_DIRECTORY": "C:\\Users\\Lee\\Dev\\Learning\\Microsoft\\.NET6\\Tutorials\\.NET6-EFCore\\.NET6-EFCore-RazorPages\\ContosoUniversity"
       }
     },
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "APPSETTINGS_DIRECTORY": "C:\\Users\\Lee\\Dev\\Learning\\Microsoft\\.NET6\\Tutorials\\.NET6-EFCore\\.NET6-EFCore-RazorPages\\ContosoUniversity"
       }
     }
   }
